@@ -1,0 +1,1 @@
+// check if user is logged in and render the component

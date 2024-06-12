@@ -1,9 +1,23 @@
-/**
- * @format
- */
+import React from "react";
+import { AppRegistry } from "react-native";
+//import Header from "./src/components/Header";
+import MainApp from "./src/App.js";
+import { Provider } from 'react-redux';
+import { createStore, compose, applyMiddleware } from 'redux';
+import { thunk } from 'redux-thunk';
+import reducers from './src/reducers';
 
-import {AppRegistry} from 'react-native';
-import App from './App';
-import {name as appName} from './app.json';
+const store = createStore(reducers, compose(applyMiddleware(thunk)));
 
-AppRegistry.registerComponent(appName, () => App);
+// const App = () => {
+//     //return <Header title="PetCrunch" />
+//     return <MainApp />
+// };
+
+const App = () => (
+    <Provider store={store}>
+        <MainApp />
+    </Provider>
+);
+
+AppRegistry.registerComponent("petclient", () => App);
