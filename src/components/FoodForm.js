@@ -53,7 +53,7 @@ function FoodForm() {
         copperppm: '',
         chloride: '',
         selenium: '',
-        lodingppm: '',
+        iodingppm: '',
         carbs: '',
         ME: ''
     });
@@ -84,7 +84,7 @@ function FoodForm() {
                 copperppm: food.copperppm,
                 chloride: food.chloride,
                 selenium: food.selenium,
-                lodingppm: food.lodingppm,
+                iodingppm: food.iodingppm,
                 carbs: food.carbs,
                 ME: food.ME
             })
@@ -135,7 +135,7 @@ function FoodForm() {
             copperppm: '',
             chloride: '',
             selenium: '',
-            lodingppm: '',
+            iodingppm: '',
             carbs: '',
             ME: ''
         });
@@ -281,11 +281,11 @@ function FoodForm() {
                     value={formValues.selenium}
                     onChangeText={text => setFormValues({ ...formValues, selenium: text })}
                 />
-                <Text style={styles.label}>Lodineppm</Text>
+                <Text style={styles.label}>Iodineppm</Text>
                 <TextInput
                     style={styles.input}
-                    value={formValues.lodineppm}
-                    onChangeText={text => setFormValues({ ...formValues, lodineppm: text })}
+                    value={formValues.iodineppm}
+                    onChangeText={text => setFormValues({ ...formValues, iodineppm: text })}
                 />
                 <Text style={styles.label}>Carbs</Text>
                 <TextInput
