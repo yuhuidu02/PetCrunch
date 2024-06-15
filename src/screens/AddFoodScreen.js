@@ -5,7 +5,7 @@ import FoodForm from '../components/FoodForm';
 import FoodList from '../components/FoodList';
 import FoodCard from '../components/FoodCard';
 import { useRoute, useNavigation } from '@react-navigation/native';
-
+import { getFoods } from '../actions/foods';
 
 // const AddFoodScreen = () => {
 //   console.log('AddFoodScreen');
@@ -50,7 +50,8 @@ const AddFoodScreen = () => {
   useEffect(() => {
     if (route.params?.newFood) {
       //handleAddFood(route.params.newFood);
-      dispatch(fetchFoods());
+      //dispatch(fetchFoods());
+      dispatch(getFoods());
     }
   }, [route.params?.newFood, dispatch]);
 
@@ -63,7 +64,7 @@ const AddFoodScreen = () => {
     <View style={styles.container}>
       {showForm ? (
         <>
-          <FoodForm />
+          <FoodForm onFormSubmit={toggleForm} />
           <Button title="View Foods" onPress={toggleForm} />
         </>
       ) : (
