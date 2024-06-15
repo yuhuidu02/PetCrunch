@@ -2,7 +2,7 @@ import React from "react";
 import { View, Text, StyleSheet, FlatList } from "react-native";
 import FoodCard from "./FoodCard";
 
-const FoodList = ({ foods }) => {
+const FoodList = ({ foods, onToggleForm }) => {
     if (!foods.length) {
         return (
             <View style={styles.emptyContainer}>
@@ -11,12 +11,15 @@ const FoodList = ({ foods }) => {
         );
     }
     console.log('FoodList', foods)
+    // const toggleFormWithId = (id) => {
+    //     onToggleForm(id);
+    // }
     return (
 
         <FlatList
             data={foods}
             keyExtractor={(item) => item._id}
-            renderItem={({ item }) => <FoodCard food={item} />}
+            renderItem={({ item }) => <FoodCard food={item} onToggleForm={onToggleForm} />}
             contentContainerStyle={styles.listContainer}
         />
     )

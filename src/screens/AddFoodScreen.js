@@ -7,31 +7,6 @@ import FoodCard from '../components/FoodCard';
 import { useRoute, useNavigation } from '@react-navigation/native';
 import { getFoods } from '../actions/foods';
 
-// const AddFoodScreen = () => {
-//   console.log('AddFoodScreen');
-//   const [foods, setFoods] = useState([]);
-//   const route = useRoute();
-//   const navigation = useNavigation();
-
-//   const handleAddFood = (food) => {
-//       setFoods(currentFoods => [...currentFoods, food]);
-//   };
-
-//   useEffect(() => {
-//     if (route.params?.newFood) {
-//       handleAddFood(route.params.newFood);
-//     }
-//   }, [route.params?.newFood]);
-    
-//   return (
-//       <View style={styles.container}>
-//         <FoodForm onAddFood={handleAddFood} />
-//         <FoodList foods={foods} />
-//       </View>
-//   );
-    
-// };
-
 const AddFoodScreen = () => {
   console.log('AddFoodScreen');
   //const [foods, setFoods] = useState([]);
@@ -41,11 +16,7 @@ const AddFoodScreen = () => {
   const route = useRoute();
   const navigation = useNavigation();
 
-  // const handleAddFood = (food) => {
-  //   console.log("Adding food", food)
-  //   setFoods(currentFoods => [...currentFoods, food]);
-  //   setShowForm(false); // Automatically switch to FoodList after adding food
-  // };
+  const [editingFoodId, setEditingFoodId] = useState(null);
 
   useEffect(() => {
     if (route.params?.newFood) {
@@ -55,9 +26,16 @@ const AddFoodScreen = () => {
     }
   }, [route.params?.newFood, dispatch]);
 
-  const toggleForm = () => {
+  const toggleForm = (foodId) => {
+    console.log('Toggling form with ID:', foodId);
+    setEditingFoodId(foodId);
     setShowForm(!showForm);
   };
+
+  // const toggleFormWithId = (id) => {
+  //   setEditingFoodId(id);
+  //   toggleForm();
+  // };
 
   return (
     
@@ -70,7 +48,7 @@ const AddFoodScreen = () => {
       ) : (
         <>
           
-          <FoodList foods={foods} />
+          <FoodList foods={foods} onToggleForm={toggleForm}/>
           <Button title="Add Food" onPress={toggleForm} />
         </>
         

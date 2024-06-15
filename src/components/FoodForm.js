@@ -3,35 +3,15 @@ import { View, Text, TextInput, Button, StyleSheet, ScrollView } from 'react-nat
 import { useSelector, useDispatch } from 'react-redux';
 import { createFood, updateFood } from '../actions/foods';
 import { useNavigation, useRoute } from '@react-navigation/native';
-import AddFoodScreen from '../screens/AddFoodScreen';
 import Toast from 'react-native-toast-message';
 
-// const FoodForm = ({ onAddFood }) => {
-//     const [foodName, setFoodName] = useState('');
-
-//     const handleSubmit = () => {
-//         onAddFood({ foodName});
-//         setFoodName('');
-//     };
-
-//     return (
-//         <View style={styles.formContainer}>
-//             <TextInput
-//                 style={styles.input}
-//                 placeholder="Enter food name"
-//                 value={foodName}
-//                 onChangeText={setFoodName}
-//             />
-//             <Button title="Add Food" onPress={handleSubmit} />
-//         </View>
-//     );
-// };
-
-function FoodForm({ onFormSubmit }) {
+function FoodForm({ onFormSubmit, editingFoodId}) {
+    console.log('FoodForm', editingFoodId);
     const route = useRoute();
-    const { selectedId } = route.params || {};
+    //const { selectedId } = route.params || {};
     const food = useSelector(state =>
-        selectedId ? state.foods.find(food => food.id === selectedId) : null
+        //selectedId ? state.foods.find(food => food.id === selectedId) : null
+        editingFoodId ? state.foods.find(food => food.id === editingFoodId) : null
     );
     const dispatch = useDispatch();
     const navigation = useNavigation();
@@ -72,35 +52,11 @@ function FoodForm({ onFormSubmit }) {
         };
     }, [food]);
 
-    // const onSubmit = () => {
-    //     if (validateForm()) {
-    //         if (selectedId) {
-    //             //dispatch(updateFood(selectedId, { ...formValues, username }));
-    //             dispatch(updateFood(selectedId, formValues));
-    //         } else {
-    //             //dispatch(createFood({ ...formValues, username }));
-    //             dispatch(createFood(formValues));
-    //         }
-    //         //navigation.goBack();
-    //         reset();
-    //     } else {
-    //         Toast.show({
-    //             type: 'error',
-    //             text1: 'Validation Error',
-    //             text2: 'Please fill in all required fields.',
-    //             visibilityTime: 4000,
-    //             autoHide: true,
-    //             topOffset: 30,
-    //             bottomOffset: 40
-    //         });
-    //     }
-    // }
-
     const handleSubmit = async () => {
         if (validateForm()) {
-            if (selectedId) {
+            if (editingFoodId) {
                 //dispatch(updateFood(selectedId, { ...formValues, username }));
-                dispatch(updateFood(selectedId, formValues));
+                dispatch(updateFood(editingFoodId, formValues));
             } else {
                 //dispatch(createFood({ ...formValues, username }));
                 dispatch(createFood(formValues));
@@ -172,7 +128,7 @@ function FoodForm({ onFormSubmit }) {
     return (
         <ScrollView>
             <View style={styles.formContainer}>
-                <Text style={styles.title}>{selectedId ? "Edit Food" : "Add New Food"}</Text>
+                <Text style={styles.title}>{editingFoodId ? "Edit Food" : "Add New Food"}</Text>
                 {/* Iterate over each form field to create input fields */}
                 {Object.keys(formValues).map(key => (
                     <View key={key}>
@@ -189,7 +145,7 @@ function FoodForm({ onFormSubmit }) {
                     </View>
                 ))}
                 <Button title="Submit" onPress={handleSubmit} />
-                {selectedId && <Button title="Cancel" onPress={reset} color="red" />}
+                {editingFoodId && <Button title="Cancel" onPress={reset} color="red" />}
             </View>
         </ScrollView>
     );

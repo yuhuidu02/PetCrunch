@@ -1,6 +1,7 @@
 import * as api from "../api";
 
 import {
+    SET_LOADING,
     FETCH_ALL_FOODS,
     CREATE_FOOD,
     UPDATE_FOOD,
@@ -8,6 +9,7 @@ import {
 } from "../constants/actionTypes";
 
 export const getFoods = () => async (dispatch) => {
+    //dispatch({ type: SET_LOADING });
     try {
         const { data } = await api.fetchFoods();
         dispatch({ type: FETCH_ALL_FOODS, payload: data });
