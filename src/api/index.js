@@ -4,6 +4,8 @@ const url = "http://localhost:5001/foods";
 
 export const fetchFoods = async () => axios.get(url);
 export const createFood = async (newFood) => axios.post(url, newFood);
+export const updateFood = async (id, food) => axios.patch(`${url}/${id}`, food);
+export const deleteFood = async (id) => axios.delete(`${url}/${id}`);
 //const api = axios.create({ baseURL: 'http://localhost:5001' });
 
 // api.interceptors.request.use((req) => {

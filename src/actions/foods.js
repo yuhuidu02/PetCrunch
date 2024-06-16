@@ -19,7 +19,7 @@ export const getFoods = () => async (dispatch) => {
 }
 
 export const createFood = (food) => async (dispatch) => {
-    console.log('food', food)
+    console.log('createFood', food)
     try {
         const { data } = await api.createFood(food);
         dispatch({ type: CREATE_FOOD, payload: data });

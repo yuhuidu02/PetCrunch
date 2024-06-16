@@ -4,8 +4,10 @@ import meals from './meals';
 import foods from './foods';
 import authentication from './authentication';
 
-export default combineReducers({ 
+const rootReducer = combineReducers({ 
     meals,
     foods,
     authentication,
 });
+
+export default rootReducer;

@@ -17,6 +17,7 @@ const AddFoodScreen = () => {
   const navigation = useNavigation();
 
   const [editingFoodId, setEditingFoodId] = useState(null);
+  console.log('editingFoodId in AddFoodScreen', editingFoodId);
 
   useEffect(() => {
     if (route.params?.newFood) {
@@ -42,7 +43,7 @@ const AddFoodScreen = () => {
     <View style={styles.container}>
       {showForm ? (
         <>
-          <FoodForm onFormSubmit={toggleForm} />
+          <FoodForm onFormSubmit={toggleForm} editingFoodId={editingFoodId}/>
           <Button title="View Foods" onPress={toggleForm} />
         </>
       ) : (

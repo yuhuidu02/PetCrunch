@@ -6,13 +6,19 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 import Toast from 'react-native-toast-message';
 
 function FoodForm({ onFormSubmit, editingFoodId}) {
-    console.log('FoodForm', editingFoodId);
+    console.log('FoodForm - editingFoodId', editingFoodId);
+    const stateInfo = useSelector(state => state);
+    console.log('Complete Redux State', stateInfo);
     const route = useRoute();
     //const { selectedId } = route.params || {};
-    const food = useSelector(state =>
+    const food = useSelector(state => {
+        console.log('editingFoodId', editingFoodId);
+        console.log('state food', state.foods);
         //selectedId ? state.foods.find(food => food.id === selectedId) : null
-        editingFoodId ? state.foods.find(food => food.id === editingFoodId) : null
-    );
+        //editingFoodId ? state.foods.find(food => food.id === editingFoodId) : null
+        return editingFoodId ? state.foods.find(food => food._id === editingFoodId) : null
+    });
+    console.log('FoodForm', food);
     const dispatch = useDispatch();
     const navigation = useNavigation();
     const [formValues, setFormValues] = useState({
@@ -52,12 +58,15 @@ function FoodForm({ onFormSubmit, editingFoodId}) {
         };
     }, [food]);
 
-    const handleSubmit = async () => {
+    const handleSubmit = () => {
         if (validateForm()) {
-            if (editingFoodId) {
+            console.log('Form Values', formValues);
+            if (food) {
+                console.log("updateFood")
                 //dispatch(updateFood(selectedId, { ...formValues, username }));
                 dispatch(updateFood(editingFoodId, formValues));
             } else {
+                console.log("createFood")
                 //dispatch(createFood({ ...formValues, username }));
                 dispatch(createFood(formValues));
             }
