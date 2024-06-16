@@ -8,7 +8,6 @@ import { useRoute, useNavigation } from '@react-navigation/native';
 import { getFoods } from '../actions/foods';
 
 const AddFoodScreen = () => {
-  console.log('AddFoodScreen');
   //const [foods, setFoods] = useState([]);
   const [showForm, setShowForm] = useState(false);
   const dispatch = useDispatch();
@@ -17,7 +16,6 @@ const AddFoodScreen = () => {
   const navigation = useNavigation();
 
   const [editingFoodId, setEditingFoodId] = useState(null);
-  console.log('editingFoodId in AddFoodScreen', editingFoodId);
 
   useEffect(() => {
     if (route.params?.newFood) {
@@ -28,7 +26,6 @@ const AddFoodScreen = () => {
   }, [route.params?.newFood, dispatch]);
 
   const toggleForm = (foodId) => {
-    console.log('Toggling form with ID:', foodId);
     setEditingFoodId(foodId);
     setShowForm(!showForm);
   };

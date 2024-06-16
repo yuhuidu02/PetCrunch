@@ -10,7 +10,6 @@ const FoodList = ({ foods, onToggleForm }) => {
             </View>
         );
     }
-    console.log('FoodList', foods)
     // const toggleFormWithId = (id) => {
     //     onToggleForm(id);
     // }

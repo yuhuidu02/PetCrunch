@@ -9,13 +9,11 @@ const FoodCard = ({ food, onToggleForm }) => {
     const navigation = useNavigation();
 
     const handleDelete = () => {
-        console.log('Delete', food._id);
         dispatch(deleteFood(food._id));
     }
 
     const handleEdit = () => {
         //navigation.navigate('FoodForm', { selectedId: food.id });
-        console.log('Edit', food);
         onToggleForm(food._id);
     }
     return (
