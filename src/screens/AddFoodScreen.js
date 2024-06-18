@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, Button } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
-import FoodForm from '../components/FoodForm';
-import FoodList from '../components/FoodList';
-import FoodCard from '../components/FoodCard';
+import FoodForm from '../foodComponents/FoodForm';
+import FoodList from '../foodComponents/FoodList';
+import FoodCard from '../foodComponents/FoodCard';
 import { useRoute, useNavigation } from '@react-navigation/native';
 import { getFoods } from '../actions/foods';
 
@@ -17,13 +17,17 @@ const AddFoodScreen = () => {
 
   const [editingFoodId, setEditingFoodId] = useState(null);
 
+  // useEffect(() => {
+  //   if (route.params?.newFood) {
+  //     //handleAddFood(route.params.newFood);
+  //     //dispatch(fetchFoods());
+  //     dispatch(getFoods());
+  //   }
+  // }, [route.params?.newFood, dispatch]);
+
   useEffect(() => {
-    if (route.params?.newFood) {
-      //handleAddFood(route.params.newFood);
-      //dispatch(fetchFoods());
-      dispatch(getFoods());
-    }
-  }, [route.params?.newFood, dispatch]);
+    dispatch(getFoods());
+  }, [dispatch]);
 
   const toggleForm = (foodId) => {
     setEditingFoodId(foodId);

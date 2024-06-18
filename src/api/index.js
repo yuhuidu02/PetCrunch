@@ -6,6 +6,14 @@ export const fetchFoods = async () => axios.get(url);
 export const createFood = async (newFood) => axios.post(url, newFood);
 export const updateFood = async (id, food) => axios.patch(`${url}/${id}`, food);
 export const deleteFood = async (id) => axios.delete(`${url}/${id}`);
+
+const url_meals = "http://localhost:5001/meals";
+
+export const fetchMeals = async () => axios.get(url_meals);
+export const createMeal = async (newMeal) => axios.post(url_meals, newMeal);
+export const updateMeal = async (id, meal) => axios.patch(`${url_meals}/${id}`, meal);
+export const deleteMeal = async (id) => axios.delete(`${url_meals}/${id}`);
+
 //const api = axios.create({ baseURL: 'http://localhost:5001' });
 
 // api.interceptors.request.use((req) => {
