@@ -15,21 +15,10 @@ const MealList = ({ currentDate }) => {
     const foods = useSelector(state => state.foods);
     console.log("MealList", meals, foods)
 
-    // useEffect(() => {
-    //     const fetchMeals = async () => {
-    //         const dailyMeals = await getMealsForDate(currentDate.format('YYYY-MM-DD'));
-    //         setMeals(dailyMeals);
-    //     };
-    //     fetchMeals();
-    // }, [currentDate]);
+    const filteredMeals = meals.filter(meal =>
+        dayjs(meal.consumedAt).isSame(currentDate, 'day')
+    );
 
-    // const getMealsForDate = (date) => {
-    //     return [
-    //         { _id: 1, foodName: "Dr.Elsey's Food", servings: "1/2 cup", completedServings: "1/2 cup", comsumedAt: "10:00 AM" },
-    //         { _id: 2, foodName: "Chicken Heart Treats", servings: "1 bite", completedServings: "1 bite", comsumedAt: "12:00 PM" },
-    //         { _id: 3 ,foodName: "Dr.Elsey's Food", servings: "1/2 cup", completedServings: "1/2 cup", comsumedAt: "6:00 PM"}
-    //     ];
-    // };
     useEffect(() => {
         dispatch(getMeals());
     }, [dispatch]);
@@ -38,17 +27,6 @@ const MealList = ({ currentDate }) => {
         setEditingMealId(mealId)
         setShowForm(!showForm);
     };
-
-    // const handleSubmit = (newMeal) => {
-    //     if (editingMealId) {
-    //         dispatch(updateMeal(editingFoodId, formValues));
-    //     } else {
-    //         dispatch(createMeal(formValues)
-    //     }
-    //     toggleForm(); 
-    // };
-
-    
 
     return (
         <View style={styles.container}>
@@ -59,7 +37,7 @@ const MealList = ({ currentDate }) => {
             ) : (
                 <>
                     <ScrollView style={styles.timeline}>
-                        {meals.map((meal, index) => (
+                        {filteredMeals.map((meal, index) => (
                             <View key={index} style={styles.mealItem}>
                                 <Text style={styles.mealTime}>{meal.foodName}</Text>
                                 <Text style={styles.mealName}>{meal.completedServings}</Text>
@@ -73,16 +51,6 @@ const MealList = ({ currentDate }) => {
         </View>
     );
 
-    // return (
-    //     <ScrollView style={styles.timeline}>
-    //         {meals.map((meal, index) => (
-    //             <View key={index} style={styles.mealItem}>
-    //                 <Text style={styles.mealTime}>{meal.time}</Text>
-    //                 <Text style={styles.mealName}>{meal.name}</Text>
-    //             </View>
-    //         ))}
-    //     </ScrollView>
-    // );
 };
 
 const styles = StyleSheet.create({

@@ -7,15 +7,6 @@ import MealList from '../mealComponents/MealList';
 
 
 const AddMealScreen = () => {
-  //const [currentDate, setCurrentDate] = useState(dayjs().format('YYYY-MM-DD'));
-
-  // const nextDay = () => {
-  //   setCurrentDate(dayjs(currentDate).add(1, 'day').format('YYYY-MM-DD'));
-  // };
-
-  // const prevDay = () => {
-  //   setCurrentDate(dayjs(currentDate).subtract(1, 'day').format('YYYY-MM-DD'));
-  // };
 
   const [currentDate, setCurrentDate] = useState(dayjs());
   const nextDay = () => {
@@ -44,9 +35,6 @@ const AddMealScreen = () => {
         <Text style={styles.dateText}>{formatDate(currentDate)}</Text>
         <Button title=">" onPress={nextDay} />
       </View>
-      {/* <ScrollView style={styles.timeline}>
-        <Text>Meals</Text>
-      </ScrollView> */}
       <MealList currentDate={currentDate} />
     </View>
   );
