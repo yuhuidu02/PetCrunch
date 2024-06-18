@@ -47,11 +47,11 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
     },
     buttonContainer: {
-      flexDirection: 'row',
-      marginTop: 10,
-      justifyContent: 'space-around',
-      width: '100%',
-  },
+        flexDirection: 'row',
+        marginTop: 10,
+        justifyContent: 'space-around',
+        width: '100%',
+    },
 });
 
 export default FoodCard;
