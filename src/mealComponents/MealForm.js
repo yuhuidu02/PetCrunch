@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, TextInput, StyleSheet, Button, ScrollView, Platform } from "react-native";
+import { View, Text, TextInput, StyleSheet, Button, ScrollView, Platform, TouchableOpacity } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import { createMeal, updateMeal } from "../actions/meals";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import Toast from "react-native-toast-message";
+import DateTimePicker from '@react-native-community/datetimepicker';
 
 
 function MealForm({ toggleForm, editingMealId }) {
@@ -21,6 +22,8 @@ function MealForm({ toggleForm, editingMealId }) {
         consumedAt: new Date()
     });
     const [formErrors, setFormErrors] = useState({});
+    const [datePickerVisible, setDatePickerVisible] = useState(false);
+
     const requiredFields = ["foodName", "completedServings"];
     
     useEffect(() => {
@@ -77,43 +80,54 @@ function MealForm({ toggleForm, editingMealId }) {
         setFormValues(prev => ({ ...prev, [key]: value }));
     };
 
+
+    
+
+    const handleDateChange = (event, selectedDate) => {
+        const currentDate = selectedDate || formValues.consumedAt;
+        setDatePickerVisible(Platform.OS === 'ios');
+        setFormValues(prev => ({ ...prev, consumedAt: currentDate }));
+    };
+    const showDatePicker = () => {
+        setDatePickerVisible(true);
+    };
+
     
     
     return (
         <ScrollView style={styles.formContainer}>
-            {/* <View style={styles.formContainer}> */}
-            {/* <Text style={styles.label}>Time</Text>
-            <TextInput
-            style={styles.input}
-            value={formValues.time}
-            onChangeText={(text) => setFormValues({ ...formValues, time: text })}
-            />
-            {formErrors.time && <Text style={styles.error}>{formErrors.time}</Text>}
-    
-            <Text style={styles.label}>Name</Text>
-            <TextInput
-            style={styles.input}
-            value={formValues.name}
-            onChangeText={(text) => setFormValues({ ...formValues, name: text })}
-            />
-            {formErrors.name && <Text style={styles.error}>{formErrors.name}</Text>}
-    
-            <Button title="Submit" onPress={handleSubmit} /> */}
-            {Object.keys(formValues).map(key => (
-                <View key={key}>
-                    <Text style={styles.label}>{key.charAt(0).toUpperCase() + key.slice(1).replace(/([A-Z])/g, ' $1').trim()}</Text>
-                    <TextInput
-                        style={styles.input}
-                        value={formValues[key]}
-                        onChangeText={(text) => handleInputChange(key, text)}
-                    />
-                    {formErrors[key] && <Text style={styles.errorText}>{formErrors[key]}</Text>}
-                </View>
-            ))}
-
+            {Object.keys(formValues).map(key => {
+                if (key !== 'consumedAt') {
+                    return (
+                        <View key={key}>
+                            <Text style={styles.label}>{key.charAt(0).toUpperCase() + key.slice(1).replace(/([A-Z])/g, ' $1').trim()}</Text>
+                            <TextInput
+                                style={styles.input}
+                                value={formValues[key]}
+                                onChangeText={(text) => handleInputChange(key, text)}
+                            />
+                            {formErrors[key] && <Text style={styles.errorText}>{formErrors[key]}</Text>}
+                        </View>
+                    )
+                }
+            })}
+            <Text style={styles.label}>Consumed At</Text>
+            <TouchableOpacity
+                style={styles.input}
+                onPress={showDatePicker}>
+                <Text>{formValues.consumedAt ? formValues.consumedAt.toLocaleString() : 'Select a date and time'}</Text>
+            </TouchableOpacity>
+            {datePickerVisible && (
+                <DateTimePicker
+                    value={formValues.consumedAt}
+                    mode="datetime"
+                    is24Hour={true}
+                    display="default"
+                    onChange={handleDateChange}
+                />
+            )}
+            {formErrors.consumedAt && <Text style={styles.error}>{formErrors.consumedAt}</Text>}
             <Button title="Submit" onPress={handleSubmit} /> 
-            {/* {editingFoodId && <Button title="Cancel" onPress={reset} color="red" />} */}
-            {/* </View> */}
         </ScrollView>
     );
 };

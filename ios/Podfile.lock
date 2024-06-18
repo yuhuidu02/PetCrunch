@@ -1055,6 +1055,8 @@ PODS:
     - React-jsi (= 0.73.7)
     - React-logger (= 0.73.7)
     - React-perflogger (= 0.73.7)
+  - RNDateTimePicker (8.1.1):
+    - React-Core
   - RNScreens (3.31.1):
     - glog
     - RCT-Folly (= 2022.05.16.00)
@@ -1121,6 +1123,7 @@ DEPENDENCIES:
   - React-runtimescheduler (from `../node_modules/react-native/ReactCommon/react/renderer/runtimescheduler`)
   - React-utils (from `../node_modules/react-native/ReactCommon/react/utils`)
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
+  - "RNDateTimePicker (from `../node_modules/@react-native-community/datetimepicker`)"
   - RNScreens (from `../node_modules/react-native-screens`)
   - RNSVG (from `../node_modules/react-native-svg`)
   - RNVectorIcons (from `../node_modules/react-native-vector-icons`)
@@ -1230,6 +1233,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/react/utils"
   ReactCommon:
     :path: "../node_modules/react-native/ReactCommon"
+  RNDateTimePicker:
+    :path: "../node_modules/@react-native-community/datetimepicker"
   RNScreens:
     :path: "../node_modules/react-native-screens"
   RNSVG:
@@ -1290,12 +1295,13 @@ SPEC CHECKSUMS:
   React-runtimescheduler: a884a55560e2a90caa1cbe0b9eaa24a5add4fa2c
   React-utils: d07d009101c7dabff68b710da5c4a47b7a850d98
   ReactCommon: 8cae78d3c3eceff20ee4bbca8bb73b675a45fd5d
+  RNDateTimePicker: 430174392d275f0ffefb627d04f0f8677f667fed
   RNScreens: 134a7511b12b8eb440b87aac21e36a71295d6024
   RNSVG: a48668fd382115bc89761ce291a81c4ca5f2fd2e
   RNVectorIcons: 96e8c5c45609932bb2f8347e1c709bcca0e95654
   SocketRocket: f32cd54efbe0f095c4d7594881e52619cfe80b17
   Yoga: c716aea2ee01df6258550c7505fa61b248145ced
 
-PODFILE CHECKSUM: 5e97f391ea5349baa3fd484f7237b0624839cdd6
+PODFILE CHECKSUM: 0f9238a257460f5ad0e24709b37566a0283d5460
 
 COCOAPODS: 1.15.2
