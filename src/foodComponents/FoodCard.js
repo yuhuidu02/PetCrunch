@@ -12,12 +12,25 @@ const FoodCard = ({ food, onToggleForm }) => {
         dispatch(deleteFood(food._id));
     }
 
+    const getCategoryColor = (category) => {
+        switch (category) {
+            case 'Wet Food':
+                return '#fae7b5'; // Banana Mania
+            case 'Supplement':
+                return '#ace1af'; // Celadon
+            case 'Treats':
+                return '#bcd4e6'; // Pale Aqua
+            default:
+                return '#FFFFFF'; // White
+        }
+    }
+
     const handleEdit = () => {
         //navigation.navigate('FoodForm', { selectedId: food.id });
         onToggleForm(food._id);
     }
     return (
-        <View style={styles.foodContainer}>
+        <View style={[styles.foodContainer, { backgroundColor: getCategoryColor(food.category) }]}>
             <Text>Name: {food.foodName}</Text>
             <Text>Category: {food.category}</Text>
             <View style={styles.buttonContainer}>
@@ -30,7 +43,6 @@ const FoodCard = ({ food, onToggleForm }) => {
 
 const styles = StyleSheet.create({
     foodContainer: {
-        backgroundColor: '#fff',
         borderRadius: 8,
         padding: 16,
         marginVertical: 8,

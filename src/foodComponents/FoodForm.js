@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, TextInput, Button, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 import { createFood, updateFood } from '../actions/foods';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import Toast from 'react-native-toast-message';
+import DateTimePicker from '@react-native-community/datetimepicker';
 
 function FoodForm({ onFormSubmit, editingFoodId}) {
 
@@ -18,12 +19,13 @@ function FoodForm({ onFormSubmit, editingFoodId}) {
 
     const dispatch = useDispatch();
     const navigation = useNavigation();
+    const [datePickerVisible, setDatePickerVisible] = useState(false);
     const [formValues, setFormValues] = useState({
         foodName: '',
         brand: '',
         category: '',
-        purchasedTime: '',
-        expirationTime: '',
+        purchasedTime: new Date(),
+        expirationTime: new Date(),
         protein: '',
         fat: '',
         fiber: '',
@@ -88,8 +90,8 @@ function FoodForm({ onFormSubmit, editingFoodId}) {
             foodName: '',
             brand: '',
             category: '',
-            purchasedTime: '',
-            expirationTime: '',
+            purchasedTime: new Date(),
+            expirationTime: new Date(),
             protein: '',
             fat: '',
             fiber: '',
@@ -127,6 +129,16 @@ function FoodForm({ onFormSubmit, editingFoodId}) {
         setFormValues(prev => ({ ...prev, [key]: value }));
     };
 
+    const handleDateChange = (event, selectedDate, key) => {
+        const currentDate = selectedDate || formValues[key];
+        setDatePickerVisible(prev => ({ ...prev, [key]: false }));
+        setFormValues(prev => ({ ...prev, [key]: currentDate }));
+    };
+
+    const showDatePicker = (key) => {
+        setDatePickerVisible(prev => ({ ...prev, [key]: true }));
+    };
+
     // if (!user) {
     //     return (
     //         <Card>
@@ -141,21 +153,60 @@ function FoodForm({ onFormSubmit, editingFoodId}) {
             <View style={styles.formContainer}>
                 <Text style={styles.title}>{editingFoodId ? "Edit Food" : "Add New Food"}</Text>
                 {/* Iterate over each form field to create input fields */}
-                {Object.keys(formValues).map(key => (
-                    <View key={key}>
-                        <Text style={styles.label}>{key.replace(/ppm/g, ' (ppm)').replace(/ME/g, 'Metabolic Energy (kcal/kg)')}</Text>
-                        <TextInput
-                            style={[
-                                styles.input,
-                                formErrors[key] ? { borderColor: 'red' } : {}
-                            ]}
-                            value={formValues[key]}
-                            //onChangeText={(text) => setFormValues({ ...formValues, [key]: text })}
-                            onChangeText={(text) => handleInputChange(key, text)}
-                        />
-                        {formErrors[key] && <Text style={styles.errorText}>{formErrors[key]}</Text>}
-                    </View>
-                ))}
+                {Object.keys(formValues).map(key => {
+                    if (key !== 'purchasedTime' && key !== 'expirationTime') {
+                        return (
+                            <View key={key}>
+                                <Text style={styles.label}>{key.replace(/ppm/g, ' (ppm)').replace(/ME/g, 'Metabolic Energy (kcal/kg)')}</Text>
+                                <TextInput
+                                    style={[
+                                        styles.input,
+                                        formErrors[key] ? { borderColor: 'red' } : {}
+                                    ]}
+                                    value={formValues[key]}
+                                    //onChangeText={(text) => setFormValues({ ...formValues, [key]: text })}
+                                    onChangeText={(text) => handleInputChange(key, text)}
+                                />
+                                {formErrors[key] && <Text style={styles.errorText}>{formErrors[key]}</Text>}
+                            </View>
+                        )
+                    }
+                })}
+
+                <Text style={styles.label}>Purchased At</Text>
+                <TouchableOpacity
+                    style={styles.input}
+                    onPress={() => showDatePicker('purchasedTime')}>
+                    <Text>{formValues.purchasedTime ? formValues.purchasedTime.toLocaleString() : 'Select a date and time'}</Text>
+                </TouchableOpacity>
+                {datePickerVisible.purchasedTime && (
+                    <DateTimePicker
+                        value={formValues.purchasedTime}
+                        mode="datetime"
+                        is24Hour={true}
+                        display="default"
+                        onChange={(event, selectedDate) => handleDateChange(event, selectedDate, 'purchasedTime')}
+                    />
+                )}
+                {formErrors.purchasedTime && <Text style={styles.errorText}>{formErrors.purchasedTime}</Text>}
+
+                <Text style={styles.label}>Best By</Text>
+                <TouchableOpacity
+                    style={styles.input}
+                    onPress={() => showDatePicker('expirationTime')}>
+                    <Text>{formValues.expirationTime ? formValues.expirationTime.toLocaleString() : 'Select a date and time'}</Text>
+                </TouchableOpacity>
+                {datePickerVisible.expirationTime && (
+                    <DateTimePicker
+                        value={formValues.expirationTime}
+                        mode="datetime"
+                        is24Hour={true}
+                        display="default"
+                        onChange={(event, selectedDate) => handleDateChange(event, selectedDate, 'expirationTime')}
+                    />
+                )}
+                {formErrors.expirationTime && <Text style={styles.errorText}>{formErrors.expirationTime}</Text>}
+                
                 <Button title="Submit" onPress={handleSubmit} />
                 {editingFoodId && <Button title="Cancel" onPress={reset} color="red" />}
             </View>
