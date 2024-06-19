@@ -5,13 +5,15 @@ import { createMeal, updateMeal } from "../actions/meals";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import Toast from "react-native-toast-message";
 import DateTimePicker from '@react-native-community/datetimepicker';
-
+import RNPickerSelect from 'react-native-picker-select'; 
+import { getFoods } from "../actions/foods";
 
 function MealForm({ toggleForm, editingMealId }) {
     const route = useRoute();
     const meal = useSelector((state) => {
         return editingMealId ? state.meals.find((meal) => meal._id === editingMealId) : null;
     });
+    const foods = useSelector(state => state.foods);
     
     const dispatch = useDispatch();
     const navigation = useNavigation();
@@ -27,12 +29,15 @@ function MealForm({ toggleForm, editingMealId }) {
     const requiredFields = ["foodName", "completedServings"];
     
     useEffect(() => {
+        dispatch(getFoods());
         if (meal) {
             setFormValues({
                 ...meal,
         });
         }
-    }, [meal]);
+    }, [meal, dispatch]);
+
+    
     
     const handleSubmit = () => {
         asyncSubmit();
@@ -92,12 +97,20 @@ function MealForm({ toggleForm, editingMealId }) {
         setDatePickerVisible(true);
     };
 
+
     
     
     return (
         <ScrollView style={styles.formContainer}>
+            <Text style={styles.label}>Food Name</Text>
+            <RNPickerSelect
+                onValueChange={(value) => handleInputChange('foodName', value)}
+                items={foods.map(food => ({ label: food.foodName, value: food.foodName }))}
+                style={pickerSelectStyles}
+                placeholder={{ label: 'Select a food', value: null }}
+            />
             {Object.keys(formValues).map(key => {
-                if (key !== 'consumedAt') {
+                if (key !== 'consumedAt' && key !== 'foodName') {
                     return (
                         <View key={key}>
                             <Text style={styles.label}>{key.charAt(0).toUpperCase() + key.slice(1).replace(/([A-Z])/g, ' $1').trim()}</Text>
@@ -148,6 +161,29 @@ const styles = StyleSheet.create({
     },
     error: {
         color: "red",
+    },
+});
+
+const pickerSelectStyles = StyleSheet.create({
+    inputIOS: {
+        fontSize: 16,
+        paddingVertical: 12,
+        paddingHorizontal: 10,
+        borderWidth: 1,
+        borderColor: 'gray',
+        borderRadius: 4,
+        color: 'black',
+        paddingRight: 30, // to ensure the text is never behind the icon
+    },
+    inputAndroid: {
+        fontSize: 16,
+        paddingHorizontal: 10,
+        paddingVertical: 8,
+        borderWidth: 0.5,
+        borderColor: 'purple',
+        borderRadius: 8,
+        color: 'black',
+        paddingRight: 30, // to ensure the text is never behind the icon
     },
 });
 

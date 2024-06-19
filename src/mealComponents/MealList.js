@@ -33,6 +33,28 @@ const MealList = ({ currentDate }) => {
         dispatch(deleteMeal(id));
     }
 
+    const foodCategoryMap = foods.reduce((map, food) => {
+        map[food.foodName] = food.category;
+        return map;
+    }, {});
+
+    const getCategoryColor = (foodName) => {
+        console.log("foodName", foodName)
+        const category = foodCategoryMap[foodName];
+        console.log("category", category)
+        switch (category) {
+            case 'Wet Food':
+                return '#fae7b5'; // Banana Mania
+            case 'Supplement':
+                return '#ace1af'; // Celadon
+            case 'Treats':
+                return '#bcd4e6'; // Pale Aqua
+            default:
+                return '#FFFFFF'; // White
+
+        }
+    }
+
     return (
         <View style={styles.container}>
             {showForm ? (
@@ -43,12 +65,12 @@ const MealList = ({ currentDate }) => {
                 <>
                     <ScrollView style={styles.timeline}>
                         {filteredMeals.map((meal, index) => (
-                            <View key={index} style={styles.mealItem}>
+                            <View key={index} style={[styles.mealItem, { backgroundColor: getCategoryColor(meal.foodName) }]}>
                                 {/* <Text style={styles.mealTime}>{meal.foodName}</Text>
                                 <Text style={styles.mealName}>{meal.completedServings}</Text> */}
                                 <View style={styles.itemContent}>
                                     <Text style={styles.time}>{dayjs(meal.consumedAt).format('h:mm A')}</Text>
-                                    <Text style={styles.description}>{meal.foodName} - {meal.completedServings}</Text>
+                                    <Text style={styles.description}>{meal.foodName} - Completed {meal.completedServings} out of {meal.servings} </Text>
                                 </View>
                                 <View style={styles.circle} />
                                 <View style={styles.line} />
@@ -74,9 +96,13 @@ const styles = StyleSheet.create({
     mealItem: {
         position: 'relative',
         marginBottom: 20,
-        // padding: 10,
-        // borderBottomWidth: 1,
-        // borderBottomColor: '#ccc'
+        padding: 10,
+        borderRadius: 5,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 1 },
+        shadowOpacity: 0.22,
+        shadowRadius: 2.22,
+        elevation: 3,
     },
     itemContent: {
         paddingLeft: 20,
