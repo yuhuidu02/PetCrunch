@@ -1,12 +1,27 @@
 // In HomeScreen.js
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
+import AuthForm from '../AuthForm/AuthForm';
+import Profile from '../homeComponents/profile';
 
-const HomeScreen = () => (
-  <View style={styles.container}>
-    <Text>Home Screen</Text>
-  </View>
-);
+const HomeScreen = () => {
+
+  const [isLogin, setIsLogin] = useState(true);
+
+  const handleLoginSuccess = () => {
+    setIsLogin(true);
+  };
+
+  return (
+    <View style={styles.container}>
+      <Text>Home Screen</Text>
+      {!isLogin && <AuthForm onLoginSuccess={handleLoginSuccess} />}
+      {isLogin && <Profile />}
+    </View>
+  )
+
+  
+};
 
 const styles = StyleSheet.create({
   container: {
