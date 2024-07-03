@@ -37,6 +37,7 @@ export const updateFood = (id, food) => async (dispatch) => {
 }
 
 export const deleteFood = (id) => async (dispatch) => {
+    console.log(`Making request to /foods/${id}`)
     try {
         await api.deleteFood(id);
         dispatch({ type: DELETE_FOOD, payload: id });
