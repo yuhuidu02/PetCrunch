@@ -5,6 +5,7 @@ import MealForm from "./MealForm";
 import { getMeals, updateMeal, createMeal, deleteMeal } from "../actions/meals";
 import { getFoods } from "../actions/foods";
 import { useSelector, useDispatch } from 'react-redux';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const MealList = ({ currentDate }) => {
     //const [meals, setMeals] = useState([]);
@@ -14,10 +15,28 @@ const MealList = ({ currentDate }) => {
     const meals = useSelector(state => state.meals);
     const foods = useSelector(state => state.foods);
     console.log("MealList", meals, foods)
+    const [userId, setUserId] = useState(null);
+
+    useEffect(() => {
+        const fetchUserId = async () => {
+            try {
+                const storedUserId = await AsyncStorage.getItem('userId');
+                console.log("get id", storedUserId);
+                setUserId(storedUserId);
+            } catch (error) {
+                console.error("Failed to fetch userId from AsyncStorage", error);
+            }
+        };
+
+        fetchUserId();
+    }, []);
+
+    console.log("userId", userId)
 
     const filteredMeals = meals
         .filter(meal => dayjs(meal.consumedAt).isSame(currentDate, 'day'))
-        .sort((a, b) => dayjs(a.consumedAt).isAfter(dayjs(b.consumedAt)) ? 1 : -1);
+        .sort((a, b) => dayjs(a.consumedAt).isAfter(dayjs(b.consumedAt)) ? 1 : -1)
+        .filter(meal => meal.creator === userId);
         
 
     useEffect(() => {

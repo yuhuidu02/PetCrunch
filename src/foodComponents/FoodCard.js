@@ -1,12 +1,14 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet, Button } from "react-native";
 import { useDispatch } from "react-redux";
 import { deleteFood } from "../actions/foods";
 import { useNavigation } from "@react-navigation/native";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const FoodCard = ({ food, onToggleForm }) => {
     const dispatch = useDispatch();
     const navigation = useNavigation();
+    const [userId, setUserId] = useState(null);
 
     const handleDelete = () => {
         dispatch(deleteFood(food._id));
@@ -25,6 +27,20 @@ const FoodCard = ({ food, onToggleForm }) => {
         }
     }
 
+    useEffect(() => {
+        const fetchUserId = async () => {
+            try {
+                const storedUserId = await AsyncStorage.getItem('userId');
+                console.log("get id", storedUserId);
+                setUserId(storedUserId);
+            } catch (error) {
+                console.error("Failed to fetch userId from AsyncStorage", error);
+            }
+        };
+
+        fetchUserId();
+    }, []);
+
     const handleEdit = () => {
         //navigation.navigate('FoodForm', { selectedId: food.id });
         onToggleForm(food._id);
@@ -34,8 +50,14 @@ const FoodCard = ({ food, onToggleForm }) => {
             <Text>Name: {food.foodName}</Text>
             <Text>Category: {food.category}</Text>
             <View style={styles.buttonContainer}>
-                <Button title="Edit" onPress={handleEdit} color="#007BFF" />
-                <Button title="Delete" onPress={handleDelete} color="#FF6347" />
+                {/* <Button title="Edit" onPress={handleEdit} color="#007BFF" />
+                <Button title="Delete" onPress={handleDelete} color="#FF6347" /> */}
+                {userId === food.creator && (
+                    <>
+                        <Button title="Edit" onPress={handleEdit} />
+                        <Button title="Delete" onPress={handleDelete} />
+                    </>
+                )}
             </View>
         </View>
     );
